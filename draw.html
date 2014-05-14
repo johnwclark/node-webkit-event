@@ -25,29 +25,72 @@ function openIndexWindow() {
 
 <script>
 
-var drawArea = {};
-var drawAreaW = 300;
-var drawAreaH = 300;
-drawArea.paper = new Raphael('drawArea', drawAreaW, drawAreaH);
-console.log('drawAreaW =' + drawAreaH + ' drawAreaW = ' + drawAreaH);
+var raf = {};
+var rafW = 300;
+var rafH = 300;
+raf.paper = new Raphael('drawArea', rafW, rafH);
+console.log('rafW =' + rafH + ' rafW = ' + rafH);
 
-drawArea.rect1 = drawArea.paper.rect(10, 10, 30, 30);
-drawArea.rect1.attr({
+// added a rectangle
+raf.rect1 = raf.paper.rect(10, 10, 30, 30);
+raf.rect1.attr({
     fill: 'azure'
 });
-drawArea.rect1.click( function () {
+raf.rect1.click( function () {
     console.log('click rectangle');
 });
 
-$('#drawArea').mousedown( function() {
+
+// line drawing
+var lineDraw = false;
+function LineDrawToggle() {
+    lineDraw = !lineDraw;
+    console.log('lineDraw =' + lineDraw);
+};
+
+// mousedown sets the start point
+var startX = null;
+var startY = null;
+var line = {};
+$('#drawArea').mousedown( function(e) {
     console.log('mousedown');
+    if ( lineDraw ) {
+        console.log('starting new line');
+        startX = e.offsetX;
+        startY = e.offsetY;
+        line = raf.paper.path( "" );
+    }
 });
 
-$('#drawArea').mouseup( function() {
+// mouseup sets the end point
+$('#drawArea').mouseup( function(e) {
     console.log('mouseup');
+    if ( lineDraw ) {
+        var endX = e.offsetX;
+        var endY = e.offsetY;
+        var pathStr = "M" + startX + " " + startY + " L" + endX + " " + endY;
+        console.log('path = ' + pathStr);
+        line = raf.paper.path( pathStr );
+        startX = null;
+        startY = null;
+    }
+});
+
+// mousemove changes the end point
+$('#drawArea').mousemove( function(e) {
+    if ( lineDraw && startX ) {
+        console.log('redrawing line');
+        var endX = e.offsetX;
+        var endY = e.offsetY;
+        var pathStr = "M" + startX + " " + startY + " L" + endX + " " + endY;
+        console.log('path = ' + pathStr);
+        // change the attr for the line
+        line.attr("path", pathStr );
+    }
 });
 
 </script>
+<input type='button' value='line draw toggle' onclick='LineDrawToggle()'>
 
   </body>
 </html>
