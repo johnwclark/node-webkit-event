@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    We are using node.js <script>document.write(process.version)</script>.
+<p>
+The point here is to test events, after you return to a page using assign.  Go to the drawing page and the events work, then return to main and go back they no longer function.
+</p>
+
+<script>
+function openDrawWindow() {
+    window.location.assign('draw.html');
+}
+</script>
+
+<input type='button' value='Drawing test' onclick='openDrawWindow()'>
+
+  </body>
+</html>
+

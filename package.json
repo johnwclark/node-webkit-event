@@ -1,0 +1,14 @@
+{
+  "name": "node-webkit-event",
+  "main": "index.html",
+  "private": true,
+
+  "window": {
+     "title": "quick event test",
+     "width": 600,
+     "height": 500,
+     "toolbar": true,
+     "frame": true
+  }
+
+}

@@ -1,0 +1,8 @@
+
+I was just shooting for a minmal node-webkit setup to test it out
+
+my toolchain setup
+
+Install Node.js ( this is required and gives you npm )
+Install Node WebKit globally: npm install –g nodewebkit
+

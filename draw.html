@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World!</title>
+  </head>
+
+<style>
+.foo{ border:solid 1px #000; width:300px; height: 300px; }
+</style>
+  <body>
+
+<script>
+function openIndexWindow() {
+    window.location.assign('index.html');
+}
+</script>
+<input type='button' value='back to index' onclick='openIndexWindow()'>
+
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<!--
+  <script src="./js/raphael-min.js"></script>
+-->
+  <div id="drawArea" class="foo"></div>
+
+<script>
+
+$('#drawArea').mousedown( function() {
+    console.log('mousedown');
+});
+
+$('#drawArea').mouseup( function() {
+    console.log('mouseup');
+});
+
+</script>
+
+  </body>
+</html>
+
