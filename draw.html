@@ -5,7 +5,7 @@
   </head>
 
 <style>
-.foo{ border:solid 1px #000; width:300px; height: 300px; }
+.foo{ border:solid 1px #000; width:300px; height:300px; }
 </style>
   <body>
 
@@ -17,12 +17,27 @@ function openIndexWindow() {
 <input type='button' value='back to index' onclick='openIndexWindow()'>
 
 <script type="text/javascript" src="./js/jquery.min.js"></script>
+<script src="./js/raphael-min.js"></script>
 <!--
-  <script src="./js/raphael-min.js"></script>
 -->
-  <div id="drawArea" class="foo"></div>
+
+<div id="drawArea" class="foo"></div>
 
 <script>
+
+var drawArea = {};
+var drawAreaW = 300;
+var drawAreaH = 300;
+drawArea.paper = new Raphael('drawArea', drawAreaW, drawAreaH);
+console.log('drawAreaW =' + drawAreaH + ' drawAreaW = ' + drawAreaH);
+
+drawArea.rect1 = drawArea.paper.rect(10, 10, 30, 30);
+drawArea.rect1.attr({
+    fill: 'azure'
+});
+drawArea.rect1.click( function () {
+    console.log('click rectangle');
+});
 
 $('#drawArea').mousedown( function() {
     console.log('mousedown');
