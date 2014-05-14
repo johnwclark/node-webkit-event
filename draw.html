@@ -24,7 +24,7 @@ function openIndexWindow() {
 <div id="drawArea" class="foo"></div>
 
 <script>
-
+// start of my script block
 var raf = {};
 var rafW = 300;
 var rafH = 300;
@@ -52,6 +52,8 @@ function LineDrawToggle() {
 var startX = null;
 var startY = null;
 var line = {};
+
+// mouse events for line drawing
 $('#drawArea').mousedown( function(e) {
     console.log('mousedown');
     if ( lineDraw ) {
@@ -76,7 +78,7 @@ $('#drawArea').mouseup( function(e) {
     }
 });
 
-// mousemove changes the end point
+// mousemove changes the end point and redraws setting the path attr
 $('#drawArea').mousemove( function(e) {
     if ( lineDraw && startX ) {
         console.log('redrawing line');
@@ -84,12 +86,13 @@ $('#drawArea').mousemove( function(e) {
         var endY = e.offsetY;
         var pathStr = "M" + startX + " " + startY + " L" + endX + " " + endY;
         console.log('path = ' + pathStr);
-        // change the attr for the line
+        // change the attr for the current line
         line.attr("path", pathStr );
     }
 });
-
+// end of my script block
 </script>
+
 <input type='button' value='line draw toggle' onclick='LineDrawToggle()'>
 
   </body>
