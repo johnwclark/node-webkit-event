@@ -18,6 +18,7 @@ function openIndexWindow() {
 
 <script type="text/javascript" src="./js/jquery.min.js"></script>
 <script src="./js/raphael-min.js"></script>
+<script src="./js/raphael.free_transform.js"></script>
 <!--
 -->
 
@@ -37,8 +38,29 @@ raf.rect1.attr({
     fill: 'azure'
 });
 raf.rect1.click( function () {
-    console.log('click rectangle');
+    console.log('click rectangle - show coords');
+    console.log('x = ' + raf.rect1.attr('x') + ' y = ' + raf.rect1.attr('y'));
+    var realX = raf.rect1.matrix.x(raf.rect1.attr('x'),raf.rect1.attr('y'));
+    var realY = raf.rect1.matrix.y(raf.rect1.attr('x'),raf.rect1.attr('y'));
+    console.log('real x = ' + realX + ' y = ' + realY);
 });
+raf.rect1.dblclick( function () {
+    console.log('dblclick rectangle - rotate 45');
+    raf.rect1.rotate(45);
+});
+
+// add a free transform element
+var rect = raf.paper
+    .rect(100, 100, 50, 50)
+    .attr('fill', '#f00')
+    ;
+// Add freeTransform
+var ft = raf.paper.freeTransform(rect);
+
+ft.showHandles();
+// Apply transformations programmatically
+ft.attrs.rotate = 45;
+ft.apply();
 
 
 // line drawing
