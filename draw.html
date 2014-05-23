@@ -50,14 +50,16 @@ raf.rect1.dblclick( function () {
 });
 
 // add a free transform element
-var rect = raf.paper
-    .rect(100, 100, 50, 50)
-    .attr('fill', '#f00')
+    var rect = raf.paper
+        .rect(100, 100, 50, 50)
+        .attr('fill', '#f00')
     ;
-// Add freeTransform
-var ft = raf.paper.freeTransform(rect);
+    // Add freeTransform to that rect
+    var ft = raf.paper.freeTransform(rect)
+        .showHandles()
+    ;
 
-ft.showHandles();
+
 // Apply transformations programmatically
 ft.attrs.rotate = 45;
 ft.apply();
