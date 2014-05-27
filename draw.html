@@ -19,6 +19,7 @@ function openIndexWindow() {
 <script type="text/javascript" src="./js/jquery.min.js"></script>
 <script src="./js/raphael-min.js"></script>
 <script src="./js/raphael.free_transform.js"></script>
+<script src="./js/raphael.json.js"></script>
 <!--
 -->
 
@@ -32,42 +33,12 @@ var rafH = 300;
 raf.paper = new Raphael('drawArea', rafW, rafH);
 console.log('rafW =' + rafH + ' rafW = ' + rafH);
 
-// added a rectangle
-raf.rect1 = raf.paper.rect(10, 10, 30, 30);
-raf.rect1.attr({
-    fill: 'azure'
-});
-raf.rect1.click( function () {
-    console.log('click rectangle - show coords');
-    console.log('x = ' + raf.rect1.attr('x') + ' y = ' + raf.rect1.attr('y'));
-    var realX = raf.rect1.matrix.x(raf.rect1.attr('x'),raf.rect1.attr('y'));
-    var realY = raf.rect1.matrix.y(raf.rect1.attr('x'),raf.rect1.attr('y'));
-    console.log('real x = ' + realX + ' y = ' + realY);
-});
-raf.rect1.dblclick( function () {
-    console.log('dblclick rectangle - rotate 45');
-    raf.rect1.rotate(45);
-});
-
-// add a free transform element
-    var rect = raf.paper
-        .rect(100, 100, 50, 50)
-        .attr('fill', '#f00')
-    ;
-    // Add freeTransform to that rect
-    var ft = raf.paper.freeTransform(rect)
-        .showHandles()
-    ;
-
-
-// Apply transformations programmatically
-ft.attrs.rotate = 45;
-ft.apply();
-
+var drawingFile = 'raphael.json';
+loadDrawing();
 
 // line drawing
 var lineDraw = false;
-function LineDrawToggle() {
+function lineDrawToggle() {
     lineDraw = !lineDraw;
     console.log('lineDraw =' + lineDraw);
 };
@@ -114,10 +85,73 @@ $('#drawArea').mousemove( function(e) {
         line.attr("path", pathStr );
     }
 });
-// end of my script block
+
+// add a free transform rectangle
+function addRect() {
+    var rect = raf.paper
+        .rect(100, 100, 50, 50)
+        .attr('fill', 'azure')
+    ;
+    // Add freeTransform to that rect
+    var ft = raf.paper.freeTransform(rect);
+    // turn it 45 degrees
+    ft.attrs.rotate = 45;
+    ft.apply();
+};
+
+
+function loadDrawing() {
+    console.log('load drawing from ' + drawingFile);
+    var json = {};
+    try {
+        var fs = require('fs');
+        json = fs.readFileSync(drawingFile, 'ascii');
+    }
+    catch (err) {
+        console.log('error reading json data');
+        return;
+    }
+
+    raf.paper.clear();
+    raf.paper.fromJSON(json, function(el, data) {
+        if ( data.ft && data.ft.attrs ) {
+            // add the free transform controls
+            raf.paper.freeTransform(el);
+            el.freeTransform.attrs = data.ft.attrs;
+            el.freeTransform.apply();
+        }
+        return el;
+    });
+};
+
+function clearDrawing() {
+    raf.paper.clear();
+};
+
+function saveDrawing() {
+    console.log('save drawing to ' + drawingFile);
+    // unplug the free transform controls
+    var json = raf.paper.toJSON(function(el, data) {
+        data.ft = {};
+        if ( el.freeTransform != null ) {
+            data.ft.attrs = el.freeTransform.attrs;
+            raf.paper.freeTransform(el).unplug();
+        }
+        return data;
+    });
+    // TODO - write the file with the json data
+    console.log('json =' + json);
+    var fs = require('fs');
+    fs.writeFileSync(drawingFile, json, 'ascii');
+    loadDrawing();
+};
+
 </script>
 
-<input type='button' value='line draw toggle' onclick='LineDrawToggle()'>
+<input type='button' value='add freeTransform rectangle' onclick='addRect()'>
+<input type='button' value='line draw toggle' onclick='lineDrawToggle()'>
+<input type='button' value='save drawing' onclick='saveDrawing()'>
+<input type='button' value='clear drawing' onclick='clearDrawing()'>
 
   </body>
 </html>
