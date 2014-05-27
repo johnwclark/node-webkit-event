@@ -94,9 +94,18 @@ function addRect() {
     ;
     // Add freeTransform to that rect
     var ft = raf.paper.freeTransform(rect);
+    ft.hideHandles();
+
     // turn it 45 degrees
     ft.attrs.rotate = 45;
     ft.apply();
+
+    // add shape events
+    rect.click( function() {
+        console.log('in click');
+        rect.toFront();
+        raf.paper.freeTransform(rect).showHandles();
+    });
 };
 
 
